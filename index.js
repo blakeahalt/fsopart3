@@ -24,9 +24,9 @@ let persons =[
   }
 ]
 
-let info = 
-  (`Phonebook has info for ${persons.length} people` +
-   Date())
+let infos = 
+  `Phonebook has info for ${persons.length} people` +
+   Date()
   // "date": "Date()" 
 
 
@@ -45,12 +45,6 @@ app.use(requestLogger)
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
-
-
-// app.get('/api/info', (req, res) => {
-//   res.send(
-//   '<h1>`Phonebook has info for ${persons.length} people`</h1>')
-// })
 
 const generateId = () => {
   const maxId = persons.length > 0
@@ -74,12 +68,13 @@ app.post('/api/info', (request, response) => {
   //   number: body.number,
   // }
 
-  const info = {
+  const infos = {
+    id: generateId(),
     content: body.content,
     date: new Date(),
   }
 
-  info = info.concat(info)
+  infos = info.concat(info)
   persons = persons.concat(person)
 
   response.json(person)

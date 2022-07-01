@@ -1,1 +1,7 @@
-GET http://localhost:3001/api/notes/
+POST http://localhost:3001/api/info/ HTTP/1.1
+content-type: application/json
+
+{
+      "content": "`Phonebook has info for ${persons.length} people`",
+       "date": "Date()"
+}
