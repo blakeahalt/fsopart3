@@ -1,6 +1,26 @@
 const express = require('express')
 const app = express()
 
+// let notes = [
+//   {
+//     id: 1,
+//     content: "HTML is easy",
+//     date: "2022-01-10T17:30:31.098Z",
+//     important: true
+//   },
+//   {
+//     id: 2,
+//     content: "Browser can execute only Javascript",
+//     date: "2022-01-10T18:39:34.091Z",
+//     important: false
+//   },
+//   {
+//     id: 3,
+//     content: "GET and POST are the most important methods of HTTP protocol",
+//     date: "2022-01-10T19:20:14.298Z",
+//     important: true
+//   }
+// ]
 let persons =[
   { 
     "id": 1,
@@ -24,12 +44,6 @@ let persons =[
   }
 ]
 
-let info = 
-  (`Phonebook has info for ${persons.length} people` +
-   Date())
-  // "date": "Date()" 
-
-
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -46,12 +60,6 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-
-// app.get('/api/info', (req, res) => {
-//   res.send(
-//   '<h1>`Phonebook has info for ${persons.length} people`</h1>')
-// })
-
 const generateId = () => {
   const maxId = persons.length > 0
     ? Math.max(...persons.map(n => n.id))
@@ -59,7 +67,7 @@ const generateId = () => {
   return maxId + 1
 }
 
-app.post('/api/info', (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (!body.content) {
@@ -68,46 +76,34 @@ app.post('/api/info', (request, response) => {
     })
   }
 
-  // const person = {
-  //   id: generateId(),
-  //   name: body.name,
-  //   number: body.number,
-  // }
-
-  const info = {
-    content: body.content,
-    date: new Date(),
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
   }
 
-  info = info.concat(info)
   persons = persons.concat(person)
 
   response.json(person)
 })
 
-app.get('/api/info', (req, res) => {
-  res.json(info)
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
 })
 
-app.delete('/api/info/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
 
-app.get('/api/info/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
 
-//   if (person) {
-//     response.json(person)
-//   } else {
-//     response.status(404).end()
-//   }
-// })
-  if (info) {
-    response.json(info)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
